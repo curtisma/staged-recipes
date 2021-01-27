@@ -1,0 +1,44 @@
+{% set name = "skill_tools" %}
+{% set version = "1.0.0" %}
+
+package:
+  name: {{ name|lower }}
+  version: {{ version }}
+
+source:
+  url: https://github.com/curtisma/SKILL_Tools/releases/download/{{ version }}/SKILL_Tools-{{ version }}.tar.gz
+  sha256: d58439c548433adcda98e695be53e526ba940a4b9c44fb9a05d92cd495cdd47f
+  # sha256 is the preferred checksum -- you can get it for a file with:
+  #  `openssl sha256 <file name>`.
+  # You may need the openssl package, available on conda-forge:
+  #  `conda install openssl -c conda-forge``
+
+build:
+  number: 0
+  # Cadence Virtuoso only runs on linux
+  skip: True  # [not linux]
+
+requirements:
+  build:
+    # Building the documentation using Sphinx is supported with these reqs
+    #  https://www.sphinx-doc.org/en/master/index.html#
+    - python {{ python }}
+    - setuptools
+    - sphinx
+    - recommonmark
+    - sphinx_rtd_theme
+
+about:
+  home: https://github.com/curtisma/SKILL_Tools
+  license: MIT
+  license_family: MIT
+  license_file: LICENSE
+  summary: 'Cadence Virtuoso SKILL/SKILL++ Utilities'
+  description: |
+    Utilities for working with Cadence's SKILL/SKILL++ 
+    including a unit testing framework.
+  dev_url: https://github.com/curtisma/SKILL_Tools
+
+extra:
+  recipe-maintainers:
+    - curtisma

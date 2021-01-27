@@ -1,0 +1,66 @@
+# conda-virtuoso A conda package adding support for Cadence's SKILL language and Cadence Virtuoso
+{% set name = "conda-virtuoso" %}
+{% set version = "1.0.0" %}
+
+package:
+  name: {{ name|lower }}
+  version: {{ version }}
+
+source:
+  url: https://github.com/curtisma/{{ name }}/releases/download/{{ version }}/{{ name }}-{{ version }}.tar.gz
+  sha256: d58439c548433adcda98e695be53e526ba940a4b9c44fb9a05d92cd495cdd47f
+  # sha256 is the preferred checksum -- you can get it for a file with:
+  #  `openssl sha256 <file name>`.
+  # You may need the openssl package, available on conda-forge:
+  #  `conda install openssl -c conda-forge``
+
+build:
+  number: 0
+  # Cadence Virtuoso only runs on linux
+  # Python CLI build requires python version > 3.6
+  skip: True  # [py<36 or not linux]
+  entry_points:
+    - virt = virt.cli:virt
+    - sp = virt.sp:sp
+
+requirements:
+  build:
+    - python {{ python }}
+    - setuptools
+    - click
+    # Building the documentation using Sphinx is supported with these reqs
+    - sphinx
+    - recommonmark
+    - sphinx_rtd_theme
+  run:
+    - python
+    - click
+
+test:
+  imports:
+    - virt
+  commands:
+    - sp -h
+    - virt -h
+    - virt cdslib -h
+
+about:
+  home: https://github.com/curtisma/conda-virtuoso
+  license: MIT
+  license_family: MIT
+  license_file: LICENSE
+  summary: 'Cadence Virtuoso Conda environments including SKILL support'
+  # The remaining entries in this section are optional, but recommended.
+  description: |
+    conda-virtuoso builds a conda environment designed specialized for the
+    Cadence virtuoso integrated circuit design system.  It includes support
+    for the SKILL and SKILL++ scripting languages based off LISP and Scheme,
+    respectively.  It also supports the creation of
+  doc_url: https://simplejson.readthedocs.io/
+  dev_url: https://github.com/curtisma/conda-virtuoso
+
+extra:
+  recipe-maintainers:
+    # GitHub IDs for maintainers of the recipe.
+    # Always check with the people listed below if they are OK becoming maintainers of the recipe. (There will be spam!)
+    - Curtisma
